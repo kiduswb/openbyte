@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+* {
+    font-family: 'Rubik', sans-serif;
+}
+
+/* Layout */
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+.footer {
+    flex-shrink: 0;
+}
+
+.border-dotted {
+    border: 2px dotted #003559;
+}
+
+/* Background Colors */
+
+.body-bg-space 
+{
+    background: linear-gradient(90deg, hsla(189, 92%, 69%, 1) 0%, hsla(335, 89%, 66%, 1) 50%, hsla(240, 63%, 57%, 1) 100%);
+    background-size: 200% 200%;
+    animation: gradientAnimation 15s ease infinite;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.bg-warning-custom {
+    background-color: #d4ba22;
+}
+
+.bg-blur {
+    background-color: transparent;
+    backdrop-filter: blur(10px);
+    margin-bottom: -1px;
+    padding-bottom: 1px;
+}
+
+/* Site Theme */
+
+.link {
+    text-decoration: none;
+}
+
+.bg-prussian-blue {
+    background-color: #003559;
+}
+
+.text-prussian-blue {
+    color: #003559;
+}
+
+.btn-prussian-blue {
+    background-color: #003559;
+    color: #fff;
+    border-color: #003559;
+}
+
+.btn-prussian-blue:hover {
+    background-color: #002540;
+    color: #fff;
+    border-color: #002540;
+}
+
+.btn-outline-prussian-blue {
+    border-color: #003559;
+    color: #003559;
+    background-color: transparent;
+}
+
+.btn-outline-prussian-blue:hover {
+    background-color: #003559;
+    color: #fff;
+    border-color: #003559;
+}
+
+.bg-columbia-blue {
+    background-color: #B9D6F2;
+}
+
+.text-columbia-blue {
+    color: #B9D6F2;
+}
+
+.btn-columbia-blue {
+    background-color: #B9D6F2;
+    color: #003559;
+    border-color: #B9D6F2;
+}
+
+.btn-columbia-blue:hover {
+    background-color: #A7C4E0;
+    color: #003559;
+    border-color: #A7C4E0;
+}
+
+.btn-outline-columbia-blue {
+    border-color: #B9D6F2;
+    color: #fff;
+    background-color: transparent;
+}
+
+.btn-outline-columbia-blue:hover {
+    background-color: #B9D6F2;
+    color: #003559;
+    border-color: #B9D6F2;
+}
+
+/* Navbar */
+
+.navbar {
+    border-bottom: none !important;
+}
+
+.navbar-logo {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* Features */
+
+.feature-icon {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+}
+
+.app-icons {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+}
+
+
+/* Auth Boxes */
+
+.logo-font {
+    font-size: 3rem;
+    font-weight: 600;
+}
