@@ -1,6 +1,13 @@
 <?php 
+
+    if(!isset($_SESSION['userid'])) {
+        header('Location: /dashboard/login/?auth=false');
+        exit;
+    }
+
     $pageTitle = "[Site] - OpenByte Hosting";
     include 'header.php';
+
 ?>
 <body class="d-flex flex-column min-vh-100">
 

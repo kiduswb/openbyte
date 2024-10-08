@@ -1,6 +1,41 @@
 <?php 
+
+    require_once 'lib/OpenByte.php';
+
+    if(isset($_SESSION['userid']))
+    {
+        header('Location: /dashboard/');
+        exit;
+    }
+
+    if(isset($_POST['submit'])) 
+    {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $user = User::login($email, $password);
+
+        if(!$user)
+        {
+            echo '
+            <div class="mb-3">
+                <div class="alert bg-danger rounded-0 border-0 text-white">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Invalid email or password.
+                </div>
+            </div>';
+
+            exit;
+        }
+
+        $_SESSION['userid'] = $user['id'];
+
+        echo '<script>window.location.href = "/dashboard/";</script>';
+        exit;
+    }
+
     $pageTitle = "Login - OpenByte Hosting";
     include 'header.php';
+
 ?>
 <body class="d-flex flex-column min-vh-100 body-bg-space">
 
@@ -16,20 +51,13 @@
                         </div>
 
                         <h4 class="card-title text-center">Dashboard Login</h4>
-                        <form action="/dashboard/login" method="POST">
-                            <?php if (isset($error)): ?>
-                                <div class="mb-3">
-                                    <div class="alert bg-danger rounded-0 border-0 text-white">
-                                        <i class="fas fa-exclamation-triangle me-2"></i>
-                                        <?php echo $error; ?>
-                                    </div>
-                                </div>
-                            <?php endif; ?>
-                            <?php if (isset($redirectMsg)): ?>
+                        <form hx-post="/dashboard/login" hx-target="#auth-msg" hx-swap="innerHTML">
+                            <div id="auth-msg"></div>
+                            <?php if ($_GET['auth'] == "false"): ?>
                                 <div class="mb-3">
                                     <div class="alert bg-warning-custom rounded-0 border-0 text-white">
                                         <i class="fas fa-info-circle me-2"></i>
-                                        <?php echo $redirectMsg; ?>
+                                        Please login to access the dashboard.
                                     </div>
                                 </div>
                             <?php endif; ?>
@@ -40,7 +68,7 @@
                                 <input type="password" class="form-control rounded-0" id="password" name="password" placeholder="Enter Password" required>
                             </div>
                             <div class="mb-3 d-flex justify-content-center flex-wrap gap-3">
-                                <button type="submit" class="btn btn-success rounded-0">Login <i class="fas fa-sign-in-alt fa-fw ms-2"></i></button>
+                                <button name="submit" type="submit" class="btn btn-success rounded-0">Login <i class="fas fa-sign-in-alt fa-fw ms-2"></i></button>
                                 <a href="/dashboard/register" class="btn btn-outline-prussian-blue rounded-0">Register <i class="fas fa-user-plus fa-fw ms-2"></i></a>
                                 <a href="/dashboard/forgot-password" class="text-center link d-block mt-3">Forgot Password?</a>
                             </div>

@@ -5,8 +5,14 @@
 
 require 'vendor/autoload.php';
 
+session_start();
+
 use FastRoute\RouteCollector;
 use function FastRoute\simpleDispatcher;
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(__DIR__.'/');
+$dotenv->load();
 
 $dispatcher = simpleDispatcher(function(RouteCollector $r) 
 {
@@ -29,6 +35,7 @@ $dispatcher = simpleDispatcher(function(RouteCollector $r)
     $r->addRoute('POST', '/dashboard/login', '/dashboard/login.php');
     $r->addRoute('GET', '/dashboard/register', '/dashboard/register.php');
     $r->addRoute('POST', '/dashboard/register', '/dashboard/register.php');
+    $r->addRoute('GET', '/dashboard/verify/{userid}', '/dashboard/verify.php');
     $r->addRoute('GET', '/dashboard/forgot-password', '/dashboard/forgot-password.php');
     $r->addRoute('POST', '/dashboard/forgot-password', '/dashboard/forgot-password.php');
     $r->addRoute('GET', '/dashboard/reset-password/{token}', '/dashboard/reset-password.php');
@@ -38,9 +45,9 @@ $dispatcher = simpleDispatcher(function(RouteCollector $r)
     $r->addRoute('GET', '/dashboard/logout', '/dashboard/logout.php');
     
 });
-
 $httpMethod = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$uri = rtrim($uri, '/');
 $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 
 switch ($routeInfo[0]) 
@@ -58,7 +65,7 @@ switch ($routeInfo[0])
 
     case \FastRoute\Dispatcher::NOT_FOUND:
         http_response_code(404);
-        include(__DIR__ . '/public' . '/404.php');
+        include(__DIR__ . '/public/404.php');
         break;
 
     case \FastRoute\Dispatcher::METHOD_NOT_ALLOWED:

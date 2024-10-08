@@ -1,4 +1,80 @@
 <?php 
+
+    require_once 'lib/OpenByte.php';
+    require_once 'lib/Emails.php';
+
+    if(isset($_SESSION['userid'])) {
+        header('Location: /dashboard/');
+        exit;
+    }
+
+    if(isset($_POST['submit'])) {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $confirmPassword = $_POST['confirmPassword'];
+
+        if($password != $confirmPassword) {
+            echo '
+            <div class="mb-3">
+                <div class="alert bg-danger rounded-0 border-0 text-white">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Passwords do not match.
+                </div>
+            </div>';
+            exit;
+        }
+
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo '
+            <div class="mb-3">
+                <div class="alert bg-danger rounded-0 border-0 text-white">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Invalid email address.
+                </div>
+            </div>';
+            exit;
+        }
+
+        if(strlen($password) < 8) {
+            echo '
+            <div class="mb-3">
+                <div class="alert bg-danger rounded-0 border-0 text-white">
+                    <i class="fas fa-exclamation-triangle me-1"></i>
+                    Password must be at least 8 characters.
+                </div>
+            </div>';
+            exit;
+        }
+
+        if(User::check_email_exists($email)) {
+            echo '
+            <div class="mb-3">
+                <div class="alert bg-danger rounded-0 border-0 text-white">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Email already exists.
+                </div>
+            </div>';
+            exit;
+        }
+
+        $userid = User::register($email, $password);
+
+        if($userid == '') {
+            echo '
+            <div class="mb-3">
+                <div class="alert bg-danger rounded-0 border-0 text-white">
+                    <i class="fas fa-exclamation-triangle me-1"></i>
+                    There was an error processing your request.
+                </div>
+            </div>';
+            exit;
+        }
+
+        $_SESSION['userid'] = $userid;
+        echo '<script>window.location.href = "/dashboard/";</script>';
+        exit;
+    }
+
     $pageTitle = "Register - OpenByte Hosting";
     include 'header.php';
 ?>
@@ -16,15 +92,8 @@
                         </div>
 
                         <h4 class="card-title text-center">Create an Account</h4>
-                        <form action="/dashboard/register" method="POST">
-                            <?php if (isset($error)): ?>
-                                <div class="mb-3">
-                                    <div class="alert bg-danger rounded-0 border-0 text-white">
-                                        <i class="fas fa-exclamation-triangle me-2"></i>
-                                        <?php echo $error; ?>
-                                    </div>
-                                </div>
-                            <?php endif; ?>
+                        <form hx-post="/dashboard/register" hx-target="#error-msg" hx-swap="innerHTML">
+                            <div id="error-msg"></div>
                             <div class="mb-3">
                                 <input type="email" class="form-control rounded-0" id="email" name="email" placeholder="email@example.com" required>
                             </div>
@@ -36,7 +105,7 @@
                             </div>
                             <div class="mb-3 d-flex justify-content-center flex-column gap-3">
                                 <p>By creating an account, you agree to our <a href="/terms" class="link">Terms of Service</a> and <a href="/privacy" class="link">Privacy Policy</a>.</p>
-                                <button type="submit" class="btn btn-outline-success rounded-0">Create Account <i class="fas fa-user-plus fa-fw ms-2"></i></button>
+                                <button type="submit" name="submit" class="btn btn-outline-success rounded-0">Create Account <i class="fas fa-user-plus fa-fw ms-2"></i></button>
                                 <a href="/dashboard/login" class="btn btn-outline-prussian-blue rounded-0">Login <i class="fas fa-sign-in-alt fa-fw ms-2"></i></a>
                             </div>
                         </form>

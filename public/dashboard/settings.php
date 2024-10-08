@@ -1,7 +1,18 @@
 <?php 
+
+    require_once 'lib/OpenByte.php';
+
+    if(!isset($_SESSION['userid'])) {
+        header('Location: /dashboard/login/?auth=false');
+        exit;
+    }
+
+    $user = new User($_SESSION['userid']);
+
     $pageTitle = "Account Settings - OpenByte Hosting";
     $activePage = "settings";
     include "header.php";
+
 ?>
 
 <body class="d-flex flex-column min-vh-100">
@@ -65,11 +76,20 @@
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <i class="fa-regular fa-user-circle fa-4x mb-4"></i>
                                 <p>
-                                    email@example.com
-                                    <i class="fa-solid fa-circle-check text-success ms-1"></i>
-                                    <span class="badge bg-warning ms-1">Unverified</span>
+                                    <?php echo $user->email; ?>
+                                    <?php if($user->is_verified == 1): ?>
+                                        <i class="fa-solid fa-circle-check text-success ms-1"></i>
+                                    <?php else: ?>
+                                        <span class="badge bg-warning ms-1">Unverified</span>
+                                    <?php endif; ?>
                                 </p>
-                                <p>Member since [Date]</p>
+
+                                <?php if($user->is_verified == 0): ?>
+                                    <p><a href="#" class="btn btn-warning w-100 rounded-0"><i class="fa fa-envelope me-2"></i> Resend Verification Link</a></p>
+                                <?php endif; ?>
+
+                                <p>Member since <?php echo date("M d, Y", $user->timestamp) ?></p>
+
                             </div>
                         </div>
                     </div>

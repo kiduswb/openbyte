@@ -1,4 +1,19 @@
 <?php 
+
+    require_once 'lib/OpenByte.php';
+
+    if(!isset($_SESSION['userid'])) {
+        header('Location: /dashboard/login/?auth=false');
+        exit;
+    }
+
+    $user = new User($_SESSION['userid']);
+
+    if(!$user->is_verified) {
+        header('Location: /dashboard/');
+        exit;
+    }
+
     $pageTitle = "Create Site - OpenByte Hosting";
     include 'header.php';
 ?>
@@ -27,6 +42,10 @@
                                     <input type="text" class="form-control rounded-0" id="domain" name="domain" placeholder="example" required>
                                     <span class="input-group-text rounded-0">.obyte.site</span>
                                 </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="username" class="form-label">cPanel Username</label>
+                                <input type="text" disabled class="form-control rounded-0" placeholder="Generated Automatically">
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">cPanel, MySQL and FTP Password</label>
