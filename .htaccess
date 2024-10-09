@@ -1,0 +1,10 @@
+# Disable public access to sensitive files and directories
+<FilesMatch "^\.env|\.env\.example|\.gitignore|composer\.(json|lock)|LICENSE|README|TODO$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Disable public access to vendor, templates, and db folders
+RedirectMatch 403 ^/vendor/.*$
+RedirectMatch 403 ^/templates/.*$
+RedirectMatch 403 ^/db/.*$

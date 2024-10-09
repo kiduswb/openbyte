@@ -6,6 +6,8 @@
 require_once 'vendor/autoload.php';
 require_once 'Database.php';
 
+use \InfinityFree\MofhClient\Client;
+
 class User 
 {
     public $id;
@@ -74,7 +76,7 @@ class Site
     public $userid;
     public $label;
     public $subdomain;
-    public $cpanel_username;
+    public $internal_id;
     public $cpanel_password;
     public $timestamp;
     
@@ -91,18 +93,58 @@ class Site
             $this->userid = $result[0]['userid'];
             $this->label = $result[0]['label'];
             $this->subdomain = $result[0]['subdomain'];
-            $this->cpanel_username = $result[0]['cpanel_username'];
+            $this->internal_id = $result[0]['internal_id'];
             $this->cpanel_password = $result[0]['cpanel_password'];
             $this->timestamp = $result[0]['timestamp'];
         }
     }
 
-    public static function create($userid, $label, $subdomain, $cpanel_username, $cpanel_password) {
-        //...
+    public static function create($userid, $label, $subdomain, $internal_id, $cpanel_password) 
+    {
+        $mofhClient = new Client($_ENV['MOFH_API_USERNAME'], $_ENV['MOFH_API_PASSWORD']);
+        $user = new User($userid);
+        $site = new Site();
+        $site->id = Ramsey\Uuid\Uuid::uuid4()->toString();
+        $site->userid = $userid;
+        $site->label = $label;
+        $site->subdomain = $subdomain;
+        $site->internal_id = $internal_id;
+        $site->cpanel_password = $cpanel_password;
+
+        try 
+        {
+            $createResponse = $mofhClient->createAccount (
+                $internal_id, 
+                $cpanel_password,
+                $user->email,
+                $subdomain,
+                'openbyte'
+            );
+        }
+
+        catch (Exception $e) {
+            echo 'Failed to create account: ' . $e->getMessage();
+            return '';
+        }
+
+        if($createResponse->isSuccessful()) {
+            mysqlQuery("INSERT INTO sites (id, userid, label, subdomain, internal_id, cpanel_password, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+            [$site->id, $site->userid, $site->label, $site->subdomain, $site->internal_id, $site->cpanel_password, time()]);
+            return $site;
+        } else {
+            //!TODO: Implement logging here
+            echo 'Failed to create account: ' . $createResponse->getMessage();
+            return '';
+        }
     }
 
     public static function subdomain_check($subdomain) {
-        //...
+        $result = mysqlQuery("SELECT * FROM sites WHERE subdomain = ?", [$subdomain]);
+        if (!$result || count($result) == 0) {
+            return false;
+        }
+
+        return true;
     }
 
     public static function get_user_sites($userid) {
