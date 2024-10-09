@@ -11,6 +11,7 @@ CREATE TABLE sites (
     userid TEXT,
     label TEXT,
     subdomain TEXT,
+    internal_id TEXT,
     cpanel_username TEXT,
     cpanel_password TEXT,
     timestamp INT

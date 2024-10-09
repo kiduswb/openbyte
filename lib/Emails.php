@@ -14,7 +14,7 @@ require_once 'vendor/autoload.php';
  * @return void
  */
 function sendTransactionalEmail($email, $subject, $body) {
-    $resend = Resend::client('re_123456789');
+    $resend = Resend::client($_ENV['RESEND_API_KEY']);
 
     $resend->emails->send([
         'from' => 'OpenByte Hosting <no-reply@openbytehosting.com>',

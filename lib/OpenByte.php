@@ -77,6 +77,7 @@ class Site
     public $label;
     public $subdomain;
     public $internal_id;
+    public $cpanel_username;
     public $cpanel_password;
     public $timestamp;
     
@@ -94,6 +95,7 @@ class Site
             $this->label = $result[0]['label'];
             $this->subdomain = $result[0]['subdomain'];
             $this->internal_id = $result[0]['internal_id'];
+            $this->cpanel_username = $result[0]['cpanel_username'];
             $this->cpanel_password = $result[0]['cpanel_password'];
             $this->timestamp = $result[0]['timestamp'];
         }
@@ -123,19 +125,29 @@ class Site
         }
 
         catch (Exception $e) {
-            echo 'Failed to create account: ' . $e->getMessage();
+            echo '<p class="text-danger">Failed to create account: ' . $e->getMessage() . '</p>';
             return '';
         }
 
         if($createResponse->isSuccessful()) {
-            mysqlQuery("INSERT INTO sites (id, userid, label, subdomain, internal_id, cpanel_password, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?)", 
-            [$site->id, $site->userid, $site->label, $site->subdomain, $site->internal_id, $site->cpanel_password, time()]);
+            $cpanel_username = $createResponse->getVpUsername();
+            mysqlQuery("INSERT INTO sites (id, userid, label, subdomain, internal_id, cpanel_username, cpanel_password, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", 
+            [$site->id, $site->userid, $site->label, $site->subdomain, $site->internal_id, $cpanel_username, $site->cpanel_password, time()]);
             return $site;
         } else {
             //!TODO: Implement logging here
-            echo 'Failed to create account: ' . $createResponse->getMessage();
+            echo '<p class="text-danger">Failed to create account: ' . $createResponse->getMessage() . '</p>';
             return '';
         }
+    }
+
+    public static function get($siteid) {
+        $result = mysqlQuery("SELECT * FROM sites WHERE id = ?", [$siteid]);
+        if (!$result || count($result) == 0) {
+            return '';
+        }
+
+        return new Site($result[0]['id']);
     }
 
     public static function subdomain_check($subdomain) {

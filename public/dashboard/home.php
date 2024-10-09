@@ -58,12 +58,14 @@
                     <div class="card-body text-center">
                         <i class="fa fa-globe text-success fa-6x mb-3"></i>
                         <div class="mt-4 mb-3">
-                            <h4>Site Label</h4>
+                            <h4><?php echo $site->label; ?></h4>
                             <p><span class="badge bg-success">Active</span></p>
-                            <a href="https://www.example.com" target="_blank" class="link">example.com</a>  
+                            <a href="http://<?php echo $site->subdomain; ?>" target="_blank" class="link">
+                                <?php echo $site->subdomain; ?>
+                            </a>  
                         </div>
                         <div class="d-flex justify-content-center gap-2">
-                            <a href="/dashboard/site/1" class="btn btn-outline-dark rounded-0"><i class="fa fa-cog me-2"></i> Manage</a>
+                            <a href="/dashboard/site/<?php echo $site->id; ?>" class="btn btn-outline-dark rounded-0"><i class="fa fa-cog me-2"></i> Manage</a>
                             <a href="https://cpanel.obyte.site" target="_blank" class="btn btn-outline-dark rounded-0">
                                 <i class="fa fa-arrow-up-right-from-square me-2"></i> cPanel
                             </a>

@@ -1,11 +1,20 @@
 <?php 
 
+    require_once 'lib/OpenByte.php';
+
     if(!isset($_SESSION['userid'])) {
         header('Location: /dashboard/login/?auth=false');
         exit;
     }
 
-    $pageTitle = "[Site] - OpenByte Hosting";
+    $site = Site::get($siteid);
+
+    if($site == '') {
+        header('Location: /dashboard/home');
+        exit;
+    }
+
+    $pageTitle = "$site->label - OpenByte Hosting";
     include 'header.php';
 
 ?>
@@ -38,31 +47,91 @@
                                 <div class="card p-2 rounded-0 border-dark">
                                     <div class="card-body">
                                         <h5 class="card-title">Overview</h5>
-                                        <p class="card-text">This is the overview of the website.</p>
+                                        <div class="card-text">
+                                            <p>Your website is currently active on <a class="link" href="http://<?php echo $site->subdomain; ?>" target="_blank"><?php echo $site->subdomain; ?></a>.</p>
+                                            <div class="border-dotted p-3 mb-3">
+                                                <p><b>cPanel Username</b> - <?php echo $site->cpanel_username; ?></p>
+                                                <p><b>cPanel Password</b> -
+                                                    <span id="cpanelPasswordLabel"><i class="fa fa-eye-slash"></i></span>
+                                                    <code id="cpanelPassword" style="display: none;"><?php echo $site->cpanel_password; ?></code>
+                                                    <button id="showPasswordBtn" class="btn btn-sm btn-outline-secondary rounded-0 ms-2" onclick="togglePassword()">Show Password</button>
+                                                </p>
+                                            </div>
+                                            <a href="https://cpanel.obyte.site/" target="_blank" class="btn btn-outline-dark rounded-0">
+                                                cPanel Login <i class="fa fa-arrow-up-right-from-square ms-2"></i>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="v-pills-files" role="tabpanel" aria-labelledby="v-pills-files-tab">
                                 <div class="card p-2 rounded-0 border-dark">
                                     <div class="card-body">
-                                        <h5 class="card-title">FTP Connection Details</h5>
-                                        <p class="card-text">This is the overview of the website.</p>
+                                        <h5 class="card-title mb-3">FTP Connection Details</h5>
+                                        <div class="card-text">
+                                            <div class="border-dotted p-3 mb-3">
+                                                <p><b>FTP Username</b> - <?php echo $site->cpanel_username; ?></p>
+                                                <p><b>FTP Password</b> -
+                                                    <span id="ftpPasswordLabel"><i class="fa fa-eye-slash"></i></span>
+                                                    <code id="ftpPassword" style="display: none;"><?php echo $site->cpanel_password; ?></code>
+                                                    <button id="showFTPPasswordBtn" class="btn btn-sm btn-outline-secondary rounded-0 ms-2" onclick="toggleFTPPassword()">Show Password</button>
+                                                </p>
+                                                <p><b>FTP Host</b> - ftpupload.net</p>
+                                                <p><b>FTP Port</b> - 21</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="v-pills-database" role="tabpanel" aria-labelledby="v-pills-database-tab">
                                 <div class="card p-2 rounded-0 border-dark">
                                     <div class="card-body">
-                                        <h5 class="card-title">MySQL Connection Details</h5>
-                                        <p class="card-text">This is the overview of the website.</p>
+                                        <h5 class="card-title mb-3">MySQL Connection Details</h5>
+                                        <div class="card-text">
+                                            <div class="border-dotted p-3 mb-3">
+                                                <p><b>MySQL Host</b> - sql104.obyte.site</p>
+                                                <p><b>MySQL Username</b> - <?php echo $site->cpanel_username; ?></p>
+                                                <p><b>MySQL Password</b> -
+                                                    <span id="mysqlPasswordLabel"><i class="fa fa-eye-slash"></i></span>
+                                                    <code id="mysqlPassword" style="display: none;"><?php echo $site->cpanel_password; ?></code>
+                                                    <button id="showMySQLPasswordBtn" class="btn btn-sm btn-outline-secondary rounded-0 ms-2" onclick="toggleMySQLPassword()">Show Password</button>
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
                                 <div class="card p-2 rounded-0 border-dark">
                                     <div class="card-body">
-                                        <h5 class="card-title">Website Settings</h5>
-                                        <p class="card-text">This is the overview of the website.</p>
+                                        <h5 class="card-title mb-4">Website Settings</h5>
+                                        <div class="card-text mb-4">
+                                            <form action="" method="post">
+                                                <h6>Update Site Label</h6>
+                                                <div class="mb-3">
+                                                    <input type="text" class="form-control rounded-0" id="label" name="label" value="<?php echo $site->label; ?>">
+                                                </div>
+                                                <button type="submit" name="updateSiteLabel" class="btn btn-outline-dark rounded-0">Save Changes</button>
+                                            </form>
+                                        </div>
+                                        <div class="card-text mb-4">
+                                            <form action="" method="post">
+                                                <h6>Update cPanel Password</h6>
+                                                <div class="mb-3">
+                                                    <input type="password" class="form-control rounded-0" id="password" name="password" placeholder="Enter New Password">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <input type="password" class="form-control rounded-0" id="passwordConfirm" name="passwordConfirm" placeholder="Confirm New Password">
+                                                </div>
+                                                <button type="submit" name="updateSiteLabel" class="btn btn-outline-dark rounded-0">Update Password</button>
+                                            </form>
+                                        </div>
+                                        <div class="card-text">
+                                            <div class="border-dotted p-3 mt-2">
+                                                <h5 class="mb-3">Danger Zone</h5>
+                                                <a href="#" class="btn btn-danger rounded-0">Delete Site</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -74,6 +143,53 @@
     </section>
 
     <?php include 'footer.php'; ?>
+
+    <script>
+        function togglePassword() {
+            var passwordLabel = document.getElementById('cpanelPasswordLabel');
+            var passwordSpan = document.getElementById('cpanelPassword');
+            var button = document.getElementById('showPasswordBtn');
+            if (passwordSpan.style.display === 'none') {
+                passwordLabel.style.display = 'none';
+                passwordSpan.style.display = 'inline';
+                button.textContent = 'Hide Password';
+            } else {
+                passwordLabel.style.display = 'inline';
+                passwordSpan.style.display = 'none';
+                button.textContent = 'Show Password';
+            }
+        }
+
+        function toggleFTPPassword() {
+            var passwordLabel = document.getElementById('ftpPasswordLabel');
+            var passwordSpan = document.getElementById('ftpPassword');
+            var button = document.getElementById('showFTPPasswordBtn');
+            if (passwordSpan.style.display === 'none') {
+                passwordLabel.style.display = 'none';
+                passwordSpan.style.display = 'inline';
+                button.textContent = 'Hide Password';
+            } else {
+                passwordLabel.style.display = 'inline';
+                passwordSpan.style.display = 'none';
+                button.textContent = 'Show Password';
+            }
+        }
+
+        function toggleMySQLPassword() {
+            var passwordLabel = document.getElementById('mysqlPasswordLabel');
+            var passwordSpan = document.getElementById('mysqlPassword');
+            var button = document.getElementById('showMySQLPasswordBtn');
+            if (passwordSpan.style.display === 'none') {
+                passwordLabel.style.display = 'none';
+                passwordSpan.style.display = 'inline';
+                button.textContent = 'Hide Password';
+            } else {
+                passwordLabel.style.display = 'inline';
+                passwordSpan.style.display = 'none';
+                button.textContent = 'Show Password';
+            }
+        }
+    </script>
 
 </body>
 </html>
