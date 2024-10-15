@@ -39,8 +39,8 @@ $dispatcher = simpleDispatcher(function(RouteCollector $r)
     $r->addRoute('GET', '/dashboard/verify/{userid}', '/dashboard/verify.php');
     $r->addRoute('GET', '/dashboard/forgot-password', '/dashboard/forgot-password.php');
     $r->addRoute('POST', '/dashboard/forgot-password', '/dashboard/forgot-password.php');
-    $r->addRoute('GET', '/dashboard/reset-password/{token}', '/dashboard/reset-password.php');
-    $r->addRoute('POST', '/dashboard/reset-password/{token}', '/dashboard/reset-password.php');
+    $r->addRoute('GET', '/dashboard/reset-password/{userid}', '/dashboard/reset-password.php');
+    $r->addRoute('POST', '/dashboard/reset-password/{userid}', '/dashboard/reset-password.php');
     $r->addRoute('GET', '/dashboard/settings', '/dashboard/settings.php');
     $r->addRoute('POST', '/dashboard/settings', '/dashboard/settings.php');
     $r->addRoute('GET', '/dashboard/settings/delete-account', '/dashboard/deleteaccount.php');

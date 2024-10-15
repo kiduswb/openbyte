@@ -91,7 +91,6 @@
 
 
         // Complete user registration
-
         $userid = User::register($email, $password);
 
         if($userid == null) {
@@ -103,10 +102,8 @@
             ';
             exit;
         }
-
     
         // Send verification link email
-
         $user = new User($userid);
         sendTransactionalEmail($user->email, "Verify your OpenByte Hosting Account", generateVerificationEmail($userid));
 

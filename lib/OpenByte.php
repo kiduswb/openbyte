@@ -43,6 +43,16 @@ class User
         else return new User($userid);
     }
 
+    public static function get_id_by_email($email) {
+        $result = mysqlQuery("SELECT id FROM users WHERE email = ?", [$email]);
+        
+        if (!$result || count($result) == 0) {
+            return null;
+        }
+
+        else return $result[0]["id"];
+    }
+
     public function update() 
     {
         $result = mysqlQuery("UPDATE users SET email = ? , pwd_hash = ? , is_verified = ? WHERE id = ?", 
@@ -91,10 +101,40 @@ class User
         return null;
     }
 
+    public static function generate_reset_token($userid) 
+    {
+        $token = '';
+
+        // If token already exists, send that token:
+        $result = mysqlQuery("SELECT * FROM reset_tokens WHERE userid = ?", [$userid]);
+        if (count($result)) $token = $result[0]['token'];
+        
+        else {
+            $token = rand(100000, 999999);
+            mysqlQuery("INSERT INTO reset_tokens (userid, token) VALUES (?, ?)", [$userid, $token]);
+        }
+
+        return $token;
+    }
+
+    public static function validate_reset_token($userid, $token) {
+        $result = mysqlQuery("SELECT * FROM reset_tokens WHERE userid = ? AND token = ?", [$userid, $token]);
+
+        if (!$result || count($result) == 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function delete_token() {
+        mysqlQuery("DELETE FROM reset_tokens WHERE userid = ?", [$this->id]);
+    }
+
     public function delete() 
     {
         $result = mysqlQuery("DELETE FROM users WHERE id = ?", [$this->id]);
-        
+
         if (!$result) {
             return false;
         }

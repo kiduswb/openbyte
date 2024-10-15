@@ -17,13 +17,11 @@
         if(!$user)
         {
             echo '
-            <div class="mb-3">
-                <div class="alert bg-danger rounded-0 border-0 text-white">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    Invalid email or password.
-                </div>
-            </div>';
-
+            <div class="alert bg-danger rounded-0 border-0 text-white">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Invalid email or password.
+            </div>
+            ';
             exit;
         }
 
@@ -52,7 +50,9 @@
 
                         <h4 class="card-title text-center">Dashboard Login</h4>
                         <form hx-post="/dashboard/login" hx-target="#auth-msg" hx-swap="innerHTML">
-                            <div id="auth-msg"></div>
+                            <div class="mb-3">
+                                <div id="auth-msg"></div>
+                            </div>
                             <?php if ($_GET['auth'] == "false"): ?>
                                 <div class="mb-3">
                                     <div class="alert bg-warning-custom rounded-0 border-0 text-white">
@@ -65,7 +65,15 @@
                                 <div class="mb-3">
                                     <div class="alert bg-success rounded-0 border-0 text-white">
                                         <i class="fas fa-info-circle me-2"></i>
-                                        Account verified successfully, please login.
+                                        Account verified successfully!
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($_GET['reset'] == "true"): ?>
+                                <div class="mb-3">
+                                    <div class="alert bg-success rounded-0 border-0 text-white">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Password reset successfully!
                                     </div>
                                 </div>
                             <?php endif; ?>
@@ -91,11 +99,11 @@
                             <div class="mb-3">
                                 <input type="password" class="form-control rounded-0" id="password" name="password" placeholder="Enter Password" required>
                             </div>
-                            <div class="mb-3 d-flex justify-content-center flex-wrap gap-3">
-                                <button name="submit" type="submit" class="btn btn-success rounded-0">Login <i class="fas fa-sign-in-alt fa-fw ms-2"></i></button>
+                            <div class="mb-4 d-flex justify-content-center flex-wrap gap-2">
+                                <button name="submit" type="submit" class="btn btn-outline-success rounded-0">Login <i class="fas fa-sign-in-alt fa-fw ms-2"></i></button>
                                 <a href="/dashboard/register" class="btn btn-outline-prussian-blue rounded-0">Register <i class="fas fa-user-plus fa-fw ms-2"></i></a>
-                                <a href="/dashboard/forgot-password" class="text-center link d-block mt-3">Forgot Password?</a>
                             </div>
+                            <a href="/dashboard/forgot-password" class="text-center link d-block mt-3">Forgot Password?</a>
                         </form>
 
                     </div>
