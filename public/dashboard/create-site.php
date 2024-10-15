@@ -37,12 +37,12 @@
         }
 
         // Validate subdomain
-        if(Site::subdomain_check($_POST['domain'].'.obyte.site')) {
+        if(!Site::subdomain_available($_POST['domain'].'.obyte.site')) {
             echo 
             '<div class="mb-3">
                 <div class="alert rounded-0 bg-danger text-white">
                     <i class="fas fa-exclamation-triangle me-2"></i>
-                    Subdomain already exists.
+                    Subdomain already registered.
                 </div>
             </div>
             <script>
@@ -99,7 +99,7 @@
         $site = Site::create($_SESSION['userid'], $_POST['label'], $full_domain, $internal_id, $_POST['password']);
 
         if(!empty($site)) {
-            echo '<script>window.location.href = "/dashboard/?site_created='.$full_domain.'";</script>';
+            echo '<script>window.location.href = "/dashboard/?site_created=true";</script>';
             exit;
         }
 

@@ -192,16 +192,30 @@ class Site
         }
     }
 
-    public static function subdomain_check($subdomain) {
+    public static function subdomain_available($subdomain) {
 
-        //!TODO: use API to check if domain is available
+        $mofhClient = new Client($_ENV['MOFH_API_USERNAME'], $_ENV['MOFH_API_PASSWORD']);
 
-        $result = mysqlQuery("SELECT * FROM sites WHERE subdomain = ?", [$subdomain]);
-        if (!$result || count($result) == 0) {
+        try
+        {
+            $sdCheck = $mofhClient->availability($subdomain);
+            if($sdCheck->isSuccessful()) return $sdCheck->isAvailable();
+            return false;
+        } 
+        
+        catch (Exception $e) {
+            error_log($e->getMessage());
             return false;
         }
 
-        return true;
+        // Should theoretically be redundant
+
+        $result = mysqlQuery("SELECT * FROM sites WHERE subdomain = ?", [$subdomain]);
+        if (count($result) == 0) {
+            return true;
+        }
+
+        return false;
     }
 
     public static function get_user_sites($userid) {
@@ -219,8 +233,26 @@ class Site
         return $sites;
     }
 
-    public static function delete($siteid) {
-        // Suspend via API, then delete from database
-        //...
+    public function delete() 
+    {
+        $mofhClient = new Client($_ENV['MOFH_API_USERNAME'], $_ENV['MOFH_API_PASSWORD']);
+
+        try 
+        {
+            $suspendRes = $mofhClient->suspend($this->internal_id, "User Request");
+            if($suspendRes->isSuccessful())
+            {
+                mysqlQuery("DELETE FROM sites WHERE id = ?", [$this->id]);
+                return true;
+            }
+
+            return false;
+        }
+
+        catch (Exception $e)
+        {
+            error_log($e->getMessage());
+            return false;
+        }
     }
 }

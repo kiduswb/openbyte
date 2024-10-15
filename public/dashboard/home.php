@@ -44,7 +44,7 @@
                 <div class="col-lg-12 mt-3" data-aos="fade-in" data-aos-delay="300">
                     <div class="alert bg-primary rounded-0 text-white">
                         <i class="fa fa-info-circle me-2"></i>
-                        Website [example.com] has been scheduled for deletion.
+                        Your website has been deleted successfully.
                     </div>
                 </div>
             <?php endif; ?>
