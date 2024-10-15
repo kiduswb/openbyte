@@ -48,6 +48,7 @@
             Label updated successfully.
         </div>
         <script>document.getElementById("site-label").contentWindow.location.reload(true);</script>
+        <script>document.getElementById("updateLabelBtn").disabled = true;</script>
         ';
         exit;
     }
@@ -105,6 +106,7 @@
             <script>document.getElementById("cpanelPassword").textContent = "'.$site->cpanel_password.'";</script>
             <script>document.getElementById("ftpPassword").textContent = "'.$site->cpanel_password.'";</script>
             <script>document.getElementById("mysqlPassword").textContent = "'.$site->cpanel_password.'";</script>
+            <script>document.getElementById("updatePasswordBtn").disabled = true;</script>
         </div>
         ';
         exit;
@@ -211,7 +213,7 @@
                                                 <div class="mb-3">
                                                     <input type="text" class="form-control rounded-0" id="site-label" name="label" value="<?php echo $site->label; ?>">
                                                 </div>
-                                                <button type="submit" name="updateSiteLabel" class="btn btn-outline-dark rounded-0">Save Changes</button>
+                                                <button type="submit" id="updateLabelBtn" name="updateSiteLabel" class="btn btn-outline-dark rounded-0">Save Changes</button>
                                             </form>
                                         </div>
                                         <div class="card-text mb-4">
@@ -226,7 +228,7 @@
                                                 <div class="mb-3">
                                                     <input type="password" class="form-control rounded-0" id="passwordConfirm" name="confirm-password" placeholder="Confirm New Password">
                                                 </div>
-                                                <button type="submit" name="updatePanelPassword" class="btn btn-outline-dark rounded-0">Update Password</button>
+                                                <button type="submit" id="updatePasswordBtn" name="updatePanelPassword" class="btn btn-outline-dark rounded-0">Update Password</button>
                                             </form>
                                         </div>
                                         <div class="card-text">
