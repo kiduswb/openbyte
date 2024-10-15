@@ -14,6 +14,7 @@ if($user->is_verified) {
     exit;
 }
 
-$user->verify();
+$user->is_verified = 1;
+$user->update();
 header("Location: /dashboard/login/?verified=true");
 exit;

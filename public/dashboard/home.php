@@ -28,7 +28,7 @@
                 <div class="col-lg-12 mt-3" data-aos="fade-in" data-aos-delay="300">
                     <div class="alert bg-warning-custom rounded-0 text-white">
                         <i class="fa fa-exclamation-triangle me-2"></i>
-                        Please <a href="/dashboard/settings" class="text-white">verify your account</a> to create and manage your websites.
+                        Please <a href="/dashboard/settings" class="text-white">verify your email address</a> to create and manage your websites.
                     </div>
                 </div>
             <?php endif; ?>
@@ -86,7 +86,7 @@
                         <div class="mt-4">
                             <?php 
                                 if($user->is_verified) echo '<a href="/dashboard/create-site" class="btn btn-outline-dark rounded-0"><i class="fa fa-plus-circle me-1"></i> Create Website</a>';
-                                else echo '<p class="text-muted">Verify your account to create a website.</p>';
+                                else echo '<p class="text-muted">Verify your email address to create a website.</p>';
                             ?>
                         </div>
                     </div>

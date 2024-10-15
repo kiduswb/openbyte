@@ -43,6 +43,18 @@ class User
         else return new User($userid);
     }
 
+    public function update() 
+    {
+        $result = mysqlQuery("UPDATE users SET email = ? , pwd_hash = ? , is_verified = ? WHERE id = ?", 
+        [$this->email, $this->pwd_hash, $this->is_verified, $this->id]);
+
+        if (!$result) {
+            return false;
+        }
+
+        return true;
+    }
+
     public static function login($email, $password) {
         $result = mysqlQuery("SELECT * FROM users WHERE email = ?", [$email]);
         if (!$result || count($result) == 0) {

@@ -8,70 +8,104 @@
         exit;
     }
 
-    if(isset($_POST['submit'])) {
+    if(isset($_POST['submit'])) 
+    {
         $email = $_POST['email'];
         $password = $_POST['password'];
         $confirmPassword = $_POST['confirmPassword'];
 
+        // Validate Password
         if($password != $confirmPassword) {
             echo '
-            <div class="mb-3">
-                <div class="alert bg-danger rounded-0 border-0 text-white">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    Passwords do not match.
-                </div>
-            </div>';
-            exit;
-        }
-
-        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo '
-            <div class="mb-3">
-                <div class="alert bg-danger rounded-0 border-0 text-white">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    Invalid email address.
-                </div>
-            </div>';
+            <div class="alert bg-danger rounded-0 border-0 text-white">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Passwords do not match.
+            </div>
+            ';
             exit;
         }
 
         if(strlen($password) < 8) {
             echo '
-            <div class="mb-3">
-                <div class="alert bg-danger rounded-0 border-0 text-white">
-                    <i class="fas fa-exclamation-triangle me-1"></i>
-                    Password must be at least 8 characters.
-                </div>
-            </div>';
+            <div class="alert bg-danger rounded-0 border-0 text-white">
+                <i class="fas fa-exclamation-triangle me-1"></i>
+                Password must be at least 8 characters.
+            </div>
+            ';
+            exit;
+        }
+
+        // Validate Email
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo '
+            <div class="alert bg-danger rounded-0 border-0 text-white">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Invalid email address.
+            </div>
+            ';
             exit;
         }
 
         if(User::check_email_exists($email)) {
             echo '
-            <div class="mb-3">
-                <div class="alert bg-danger rounded-0 border-0 text-white">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    Email already exists.
-                </div>
-            </div>';
+            <div class="alert bg-danger rounded-0 border-0 text-white">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Email already exists.
+            </div>
+            ';
             exit;
         }
+
+        // Validate reCaptcha
+        $recaptchaSecretKey = $_ENV['RECAPTCHA_SECRET_KEY'];
+		$recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
+
+		$recaptchaUrl = 'https://www.google.com/recaptcha/api/siteverify';
+		$recaptchaData = [
+			'secret' => $recaptchaSecretKey,
+			'response' => $recaptchaResponse,
+			'remoteip' => $_SERVER['REMOTE_ADDR']
+		];
+
+		$recaptchaOptions = [
+			'http' => [
+				'header' => "Content-Type: application/x-www-form-urlencoded\r\n",
+				'method' => 'POST',
+				'content' => http_build_query($recaptchaData)
+			]
+		];
+
+		$recaptchaContext = stream_context_create($recaptchaOptions);
+		$recaptchaResult = file_get_contents($recaptchaUrl, false, $recaptchaContext);
+		$recaptchaJson = json_decode($recaptchaResult);
+
+        if ($recaptchaJson->success !== true) {
+            echo '
+            <div class="alert bg-danger rounded-0 border-0 text-white">
+                <i class="fas fa-exclamation-triangle me-1"></i>
+                Please complete reCaptcha.
+            </div>
+            ';
+            exit;
+        }
+
+
+        // Complete user registration
 
         $userid = User::register($email, $password);
 
         if($userid == null) {
             echo '
-            <div class="mb-3">
-                <div class="alert bg-danger rounded-0 border-0 text-white">
-                    <i class="fas fa-exclamation-triangle me-1"></i>
-                    There was an error processing your request.
-                </div>
-            </div>';
+            <div class="alert bg-danger rounded-0 border-0 text-white">
+                <i class="fas fa-exclamation-triangle me-1"></i>
+                There was an error processing your request.
+            </div>
+            ';
             exit;
         }
 
     
-        // Send verification link
+        // Send verification link email
 
         $user = new User($userid);
         sendTransactionalEmail($user->email, "Verify your OpenByte Hosting Account", generateVerificationEmail($userid));
@@ -98,8 +132,10 @@
                         </div>
 
                         <h4 class="card-title text-center">Create an Account</h4>
-                        <form hx-post="/dashboard/register" hx-target="#error-msg" hx-swap="innerHTML">
-                            <div id="error-msg"></div>
+                        <form hx-post="/dashboard/register" hx-target="#reg-error-msg" hx-swap="innerHTML">
+                            <div class="mb-3">
+                                <div id="reg-error-msg"></div>
+                            </div>
                             <div class="mb-3">
                                 <input type="email" class="form-control rounded-0" id="email" name="email" placeholder="email@example.com" required>
                             </div>
@@ -108,6 +144,9 @@
                             </div>
                             <div class="mb-3">
                                 <input type="password" class="form-control rounded-0" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                            </div>
+                            <div class="mb-3">
+                                <div class="g-recaptcha" data-sitekey="<?php echo $_ENV['RECAPTCHA_SITE_KEY']; ?>"></div>
                             </div>
                             <div class="mb-3 d-flex justify-content-center flex-column gap-3">
                                 <p>By creating an account, you agree to our <a href="/terms" class="link">Terms of Service</a> and <a href="/privacy" class="link">Privacy Policy</a>.</p>
@@ -124,6 +163,8 @@
 
 
     <?php include 'footer.php'; ?>
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 </body>
 </html>
