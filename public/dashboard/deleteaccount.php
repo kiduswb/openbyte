@@ -12,9 +12,9 @@ $user = User::get($userid);
 $sites = Site::get_user_sites($user->id);
 
 // Delete all of the user's hosted websites
-foreach($sites as $site) 
-{
-    $site->delete();
+if(count($sites)) {
+    foreach($sites as $site) 
+        $site->delete();
 }
 
 // Delete user account
