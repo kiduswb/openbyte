@@ -332,7 +332,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn rounded-0 btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <a href="/dashboard/settings/delete-account/<?php echo $user->id; ?>" class="btn rounded-0 btn-danger">Delete Account</a>
+                    <a href="/dashboard/settings/delete-account" class="btn rounded-0 btn-danger">Delete Account</a>
                 </div>
             </div>
         </div>
