@@ -91,8 +91,15 @@ class User
         return null;
     }
 
-    public function verify() {
-        mysqlQuery('UPDATE users SET is_verified = 1 WHERE id = ?', [$this->id]);
+    public function delete() 
+    {
+        $result = mysqlQuery("DELETE FROM users WHERE id = ?", [$this->id]);
+        
+        if (!$result) {
+            return false;
+        }
+
+        return true;
     }
 }
 
