@@ -133,7 +133,7 @@
         </script>
         ';
 
-        // sendTransactionalEmail($user->email, "Verify your OpenByte Hosting Account", generateVerificationEmail($userid));
+        sendTransactionalEmail($user->email, "Verify your OpenByte Hosting Account", generateVerificationEmail($userid));
 
         exit;
     }
