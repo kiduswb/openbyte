@@ -89,7 +89,7 @@
                                         <h5 class="card-title mb-3">MySQL Connection Details</h5>
                                         <div class="card-text">
                                             <div class="border-dotted p-3 mb-3">
-                                                <p><b>MySQL Host</b> - sql104.obyte.site</p>
+                                                <p><b>MySQL Host</b> - <i>(View in cPanel)</i></p>
                                                 <p><b>MySQL Username</b> - <?php echo $site->cpanel_username; ?></p>
                                                 <p><b>MySQL Password</b> -
                                                     <span id="mysqlPasswordLabel"><i class="fa fa-eye-slash"></i></span>

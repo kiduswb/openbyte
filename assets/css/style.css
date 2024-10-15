@@ -52,6 +52,7 @@ main {
 .bg-blur {
     background-color: transparent;
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     margin-bottom: -1px;
     padding-bottom: 1px;
 }

@@ -6,3 +6,4 @@
 
 .env
 TODO.md
+templates/initemail.html

@@ -95,7 +95,7 @@
             <?php endfor; ?>
 
             <div class="col-lg-12">
-                <p><?php echo count($sites); ?>/3 Slots Used - <a class="link" href="/premium">Upgrade to Premium</a></p>
+                <p><?php echo count($sites); ?>/3 Slots Used</p>
             </div>
 
         </div>

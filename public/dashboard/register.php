@@ -70,7 +70,11 @@
             exit;
         }
 
-        //!TODO: Send verification link via email here.
+    
+        // Send verification link
+
+        $user = new User($userid);
+        sendTransactionalEmail($user->email, "Verify your OpenByte Hosting Account", generateVerificationEmail($userid));
 
         $_SESSION['userid'] = $userid;
         echo '<script>window.location.href = "/dashboard/";</script>';

@@ -17,6 +17,9 @@
                 <a class="nav-link <?php echo ($activePage === 'donate') ? 'active' : ''; ?>" href="/donate">
                     Contribute
                 </a>
+                <a class="nav-link" href="https://forum.openbytehosting.com" target="_blank">
+                    Support Forum &nbsp;<i class="fas fa-arrow-up-right-from-square"></i>
+                </a>
                 <a class="btn btn-outline-columbia-blue rounded-0" href="/dashboard">
                     Dashboard
                 </a>
