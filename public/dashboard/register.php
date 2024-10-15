@@ -70,6 +70,8 @@
             exit;
         }
 
+        //!TODO: Send verification link via email here.
+
         $_SESSION['userid'] = $userid;
         echo '<script>window.location.href = "/dashboard/";</script>';
         exit;

@@ -33,6 +33,16 @@ class User
         }
     }
 
+    public static function get($userid) {
+        $result = mysqlQuery("SELECT * FROM users WHERE id = ?", [$userid]);
+        
+        if (!$result || count($result) == 0) {
+            return null;
+        }
+
+        else return new User($userid);
+    }
+
     public static function login($email, $password) {
         $result = mysqlQuery("SELECT * FROM users WHERE email = ?", [$email]);
         if (!$result || count($result) == 0) {
@@ -67,6 +77,10 @@ class User
         }
 
         return '';
+    }
+
+    public function verify() {
+        mysqlQuery('UPDATE users SET is_verified = 1 WHERE id = ?', [$this->id]);
     }
 }
 

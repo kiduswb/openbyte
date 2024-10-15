@@ -61,6 +61,14 @@
                                     </div>
                                 </div>
                             <?php endif; ?>
+                            <?php if ($_GET['verified'] == "true"): ?>
+                                <div class="mb-3">
+                                    <div class="alert bg-success rounded-0 border-0 text-white">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Account verified successfully, please login.
+                                    </div>
+                                </div>
+                            <?php endif; ?>
                             <div class="mb-3">
                                 <input type="email" class="form-control rounded-0" id="email" name="email" placeholder="email@example.com" required>
                             </div>
