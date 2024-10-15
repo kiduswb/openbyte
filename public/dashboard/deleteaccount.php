@@ -3,6 +3,8 @@
 require_once "lib/OpenByte.php";
 require_once "lib/Emails.php";
 
+error_reporting(E_ALL);
+
 if(!isset($_SESSION['userid'])) {    
     header('Location: /404');
     exit;
