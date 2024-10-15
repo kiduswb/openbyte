@@ -13,7 +13,7 @@ function mysqlQuery($query, $params = [])
 
     try 
     {
-        $db = new PDO($dsn, $_ENV['DB_USER'], $_ENV['DB_PASSWORD'], [
+        $db = new PDO($dsn, $_ENV['DB_USER'], $_ENV['DB_PASS'], [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_PERSISTENT => false,
