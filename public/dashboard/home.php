@@ -44,7 +44,7 @@
                 <div class="col-lg-12 mt-3" data-aos="fade-in" data-aos-delay="300">
                     <div class="alert bg-primary rounded-0 text-white">
                         <i class="fa fa-info-circle me-2"></i>
-                        Your website has been deleted successfully.
+                        Your website has been scheduled for deletion. Please allow a few hours for changes to take effect.
                     </div>
                 </div>
             <?php endif; ?>

@@ -2,7 +2,7 @@
 
 require_once "lib/OpenByte.php";
 
-if(!isset($_SESSION['userid'])) {
+if(!isset($_SESSION['userid'])) {    
     header('Location: /404');
     exit;
 }
@@ -15,5 +15,5 @@ if($site == null) {
 }
 
 $site->delete();
-header("Location: /dashboard/?site-deleted=true");
+header("Location: /dashboard/?site_deleted=true");
 exit;
