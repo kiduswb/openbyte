@@ -1,3 +1,12 @@
+# NOTICE: Apache's mod_rewrite is required for this to work. # 
+# Please ensure it is enabled before proceeding. #
+# And also make sure that AllowOverride is set to All in the httpd.conf file. #
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [QSA,L]
+
 # Disable public access to sensitive files and directories
 <FilesMatch "^\.env|\.env\.example|\.gitignore|composer\.(json|lock)|LICENSE|README|TODO$">
     Order allow,deny
