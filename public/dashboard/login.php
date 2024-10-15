@@ -69,6 +69,14 @@
                                     </div>
                                 </div>
                             <?php endif; ?>
+                            <?php if ($_GET['logout'] == "true"): ?>
+                                <div class="mb-3">
+                                    <div class="alert bg-primary rounded-0 border-0 text-white">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        You've been logged out successfully.
+                                    </div>
+                                </div>
+                            <?php endif; ?>
                             <div class="mb-3">
                                 <input type="email" class="form-control rounded-0" id="email" name="email" placeholder="email@example.com" required>
                             </div>

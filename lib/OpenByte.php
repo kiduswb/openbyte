@@ -76,7 +76,7 @@ class User
             return $id;
         }
 
-        return '';
+        return null;
     }
 
     public function verify() {
@@ -158,13 +158,44 @@ class Site
     public static function get($siteid) {
         $result = mysqlQuery("SELECT * FROM sites WHERE id = ?", [$siteid]);
         if (!$result || count($result) == 0) {
-            return '';
+            return null;
         }
 
         return new Site($result[0]['id']);
     }
 
+    public function update() {
+        $result = mysqlQuery("UPDATE sites SET label = ?, cpanel_password = ? WHERE id = ?", [$this->label, $this->cpanel_password, $this->id]);
+        
+        if (!$result) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function change_cpanel_password($newpass) 
+    {
+        $mofhClient = new Client($_ENV['MOFH_API_USERNAME'], $_ENV['MOFH_API_PASSWORD']);
+
+        try
+        {
+            $passwordChangeReq = $mofhClient->password($this->internal_id, $newpass);
+            if($passwordChangeReq->isSuccessful()) 
+            {
+                $this->cpanel_password = $newpass;
+                return $this->update();
+            }
+        } catch (Exception $e) {
+            //!TODO: implement error logging
+            return false;
+        }
+    }
+
     public static function subdomain_check($subdomain) {
+
+        //!TODO: use API to check if domain is available
+
         $result = mysqlQuery("SELECT * FROM sites WHERE subdomain = ?", [$subdomain]);
         if (!$result || count($result) == 0) {
             return false;
@@ -189,6 +220,7 @@ class Site
     }
 
     public static function delete($siteid) {
+        // Suspend via API, then delete from database
         //...
     }
 }

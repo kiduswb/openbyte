@@ -9,10 +9,93 @@
 
     $site = Site::get($siteid);
 
-    if($site == '') {
+    if($site == null) {
         header('Location: /dashboard/home');
         exit;
     }
+
+    // Handle Update Site Label Request
+    if(isset($_POST['updateSiteLabel'])) 
+    {
+        // Validate label
+        if(empty($_POST['label']) || !preg_match('/^[a-zA-Z0-9\s]{1,30}$/', $_POST['label'])) {
+            echo 
+            '<div class="alert rounded-0 bg-danger text-white">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Invalid website label.
+            </div>';
+            exit;
+        }
+
+        if($site->label == $_POST['label']) exit;
+
+        // Update Label
+
+        $site->label = $_POST['label'];
+
+        if(!$site->update()) {
+            echo 
+            '<div class="alert rounded-0 bg-danger text-white">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Error processing request.
+            </div>';
+            exit;
+        }
+
+        echo 
+        '<div class="alert rounded-0 bg-success text-white">
+            <i class="fas fa-info-circle me-2"></i>
+            Label updated successfully.
+        </div>
+        <script>document.getElementById("site-label").contentWindow.location.reload(true);</script>
+        ';
+        exit;
+    }
+
+    // Handle Password Update Request
+    if(isset($_POST['updatePanelPassword'])) 
+    {
+        // Validate password
+        if (strlen($_POST['password']) < 8) {
+            echo 
+            '<div class="mb-3">
+                <div class="alert rounded-0 bg-danger text-white">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Password must be at least 8 characters.
+                </div>
+            </div>';
+            exit;
+        }
+
+        if ($_POST['password'] !== $_POST['confirm-password']) {
+            echo 
+            '<div class="mb-3">
+                <div class="alert rounded-0 bg-danger text-white">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Passwords do not match.
+                </div>
+            </div>';
+            exit;
+        }
+
+        if(!$site->change_cpanel_password($_POST['password'])) {
+            echo 
+            '<div class="alert rounded-0 bg-danger text-white">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Error processing request.
+            </div>';
+            exit;
+        }
+
+        echo 
+        '<div class="alert rounded-0 bg-success text-white">
+            <i class="fas fa-info-circle me-2"></i>
+            cPanel password updated successfully.
+        </div>
+        ';
+        exit;
+    }
+
 
     $pageTitle = "$site->label - OpenByte Hosting";
     include 'header.php';
@@ -106,30 +189,36 @@
                                     <div class="card-body">
                                         <h5 class="card-title mb-4">Website Settings</h5>
                                         <div class="card-text mb-4">
-                                            <form action="" method="post">
+                                            <form hx-post="/dashboard/site/<?php echo $siteid; ?>" hx-target="#update-label-msg" hx-swap="innerHTML">
                                                 <h6>Update Site Label</h6>
                                                 <div class="mb-3">
-                                                    <input type="text" class="form-control rounded-0" id="label" name="label" value="<?php echo $site->label; ?>">
+                                                    <div id="update-label-msg"></div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <input type="text" class="form-control rounded-0" id="site-label" name="label" value="<?php echo $site->label; ?>">
                                                 </div>
                                                 <button type="submit" name="updateSiteLabel" class="btn btn-outline-dark rounded-0">Save Changes</button>
                                             </form>
                                         </div>
                                         <div class="card-text mb-4">
-                                            <form action="" method="post">
+                                            <form hx-post="/dashboard/site/<?php echo $siteid; ?>" hx-target="#update-password-msg" hx-swap="innerHTML">
                                                 <h6>Update cPanel Password</h6>
+                                                <div class="mb-3">
+                                                    <div id="update-password-msg"></div>
+                                                </div>
                                                 <div class="mb-3">
                                                     <input type="password" class="form-control rounded-0" id="password" name="password" placeholder="Enter New Password">
                                                 </div>
                                                 <div class="mb-3">
-                                                    <input type="password" class="form-control rounded-0" id="passwordConfirm" name="passwordConfirm" placeholder="Confirm New Password">
+                                                    <input type="password" class="form-control rounded-0" id="passwordConfirm" name="confirm-password" placeholder="Confirm New Password">
                                                 </div>
-                                                <button type="submit" name="updateSiteLabel" class="btn btn-outline-dark rounded-0">Update Password</button>
+                                                <button type="submit" name="updatePanelPassword" class="btn btn-outline-dark rounded-0">Update Password</button>
                                             </form>
                                         </div>
                                         <div class="card-text">
                                             <div class="border-dotted p-3 mt-2">
                                                 <h5 class="mb-3">Danger Zone</h5>
-                                                <a href="#" class="btn btn-danger rounded-0">Delete Site</a>
+                                                <a href="#" class="btn btn-danger rounded-0" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Site</a>
                                             </div>
                                         </div>
                                     </div>
@@ -141,6 +230,29 @@
             </div>
         </div>
     </section>
+
+    <!-- DELETE SITE CONFIRMATION MODAL -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content rounded-0">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this site? This action cannot be undone. 
+                    <br><br>
+                    You may not be able to reuse the subdomain for up to 60 days. 
+                    <br><br>
+                    <b>All of your site's data and files will be permanently lost!</b>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary rounded-0" data-bs-dismiss="modal">Cancel</button>
+                    <a href="/dashboard/site/delete/<?php echo $siteid; ?>" class="btn btn-danger rounded-0">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <?php include 'footer.php'; ?>
 

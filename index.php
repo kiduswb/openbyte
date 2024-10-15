@@ -31,6 +31,7 @@ $dispatcher = simpleDispatcher(function(RouteCollector $r)
     $r->addRoute('POST', '/dashboard/create-site', '/dashboard/create-site.php');
     $r->addRoute('GET', '/dashboard/site/{siteid}', '/dashboard/site.php');
     $r->addRoute('POST', '/dashboard/site/{siteid}', '/dashboard/site.php');
+    $r->addRoute('GET', '/dashboard/site/delete/{$siteid}','/dashboard/deletesite.php');
     $r->addRoute('GET', '/dashboard/login', '/dashboard/login.php');
     $r->addRoute('POST', '/dashboard/login', '/dashboard/login.php');
     $r->addRoute('GET', '/dashboard/register', '/dashboard/register.php');

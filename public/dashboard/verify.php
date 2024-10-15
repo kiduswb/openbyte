@@ -9,6 +9,11 @@ if ($user == null) {
     exit;
 }
 
+if($user->is_verified) {
+    header("Location: /dashboard");
+    exit;
+}
+
 $user->verify();
 header("Location: /dashboard/login/?verified=true");
 exit;

@@ -21,8 +21,15 @@ function mysqlQuery($query, $params = [])
 
         $stmt = $db->prepare($query);
         $stmt->execute($params);
-        return $stmt->fetchAll();
-    } catch (PDOException $e) {
+
+        // Check if the query is a SELECT or a data-modifying query
+        if (preg_match('/^\s*(SELECT|SHOW|DESCRIBE|EXPLAIN)\s/i', $query)) 
+            return $stmt->fetchAll(); 
+        
+        return $stmt->rowCount();
+    } 
+    
+    catch (PDOException $e) {
         //!TODO: Implement logging here
         // error_log($e->getMessage());
         echo $e->getMessage();

@@ -59,7 +59,7 @@
 
         $userid = User::register($email, $password);
 
-        if($userid == '') {
+        if($userid == null) {
             echo '
             <div class="mb-3">
                 <div class="alert bg-danger rounded-0 border-0 text-white">
