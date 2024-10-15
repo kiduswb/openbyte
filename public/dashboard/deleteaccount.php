@@ -2,7 +2,10 @@
 
 require_once "lib/OpenByte.php";
 require_once "lib/Emails.php";
+ob_start();
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 if(!isset($_SESSION['userid'])) {    
@@ -10,7 +13,7 @@ if(!isset($_SESSION['userid'])) {
     exit;
 }
 
-$user = User::get($userid);
+$user = User::get($_SESSION['userid']);
 
 if($user == null) {
     header('Location: /404');
@@ -26,8 +29,17 @@ if(count($sites)) {
 }
 
 // Delete user account
-sendTransactionalEmail($user->email, "OpenByte Hosting Account Deleted", generateAccountDeletionEmail());
-$user->delete();
-unset($_SESSION['userid']);
-header("Location: /dashboard/login/?deleted=true");
+if($user->delete())
+{
+    sendTransactionalEmail($user->email, "OpenByte Hosting Account Deleted", generateAccountDeletionEmail());
+    unset($_SESSION['userid']);
+    header("Location: /dashboard/login/?deleted=true");
+}
+
+else
+{
+    die("error");
+}
+
+ob_end_flush();
 exit;
