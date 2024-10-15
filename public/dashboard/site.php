@@ -96,10 +96,15 @@
             exit;
         }
 
+        $site = Site::get($siteid);
+
         echo 
         '<div class="alert rounded-0 bg-success text-white">
             <i class="fas fa-info-circle me-2"></i>
             cPanel password updated successfully.
+            <script>document.getElementById("cPanelPassword").textContent = "'.$site->cpanel_password.'";</script>
+            <script>document.getElementById("ftpPassword").textContent = "'.$site->cpanel_password.'";</script>
+            <script>document.getElementById("mysqlPassword").textContent = "'.$site->cpanel_password.'";</script>
         </div>
         ';
         exit;
