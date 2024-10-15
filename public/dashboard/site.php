@@ -78,7 +78,7 @@
             exit;
         }
 
-        if(strcmp($_POST['password'], $site->cpanel_password)) {
+        if($_POST['password'] == $site->cpanel_password) {
             echo 
             '<div class="alert rounded-0 bg-warning-custom text-white">
                 <i class="fas fa-exclamation-triangle me-2"></i>
