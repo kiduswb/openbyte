@@ -79,7 +79,7 @@
                             <?php endif; ?>
                             <?php if ($_GET['deleted'] == "true"): ?>
                                 <div class="mb-3">
-                                    <div class="alert bg-primary rounded-0 border-0 text-white">
+                                    <div class="alert bg-warning-custom rounded-0 border-0 text-white">
                                         <i class="fas fa-info-circle me-2"></i>
                                         Your account has been deleted.
                                     </div>
