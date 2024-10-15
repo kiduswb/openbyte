@@ -78,6 +78,15 @@
             exit;
         }
 
+        if($site->cpanel_password == $_POST['password']) {
+            echo 
+            '<div class="alert rounded-0 bg-warning-custom text-white">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Please enter a new password.
+            </div>';
+            exit;
+        }
+
         if(!$site->change_cpanel_password($_POST['password'])) {
             echo 
             '<div class="alert rounded-0 bg-danger text-white">
@@ -91,9 +100,6 @@
         '<div class="alert rounded-0 bg-success text-white">
             <i class="fas fa-info-circle me-2"></i>
             cPanel password updated successfully.
-            <script>document.getElementById("cPanelPassword").textContent = "'.$site->cpanel_password.'";</script>
-            <script>document.getElementById("ftpPassword").textContent = "'.$site->cpanel_password.'";</script>
-            <script>document.getElementById("mysqlPassword").textContent = "'.$site->cpanel_password.'";</script>
         </div>
         ';
         exit;
