@@ -44,8 +44,12 @@ $dispatcher = simpleDispatcher(function(RouteCollector $r)
     $r->addRoute('POST', '/dashboard/settings', '/dashboard/settings.php');
     $r->addRoute('GET', '/dashboard/settings/delete-account', '/dashboard/deleteaccount.php');
     $r->addRoute('GET', '/dashboard/logout', '/dashboard/logout.php');
+
+    // SEO
+    $r->addRoute('GET', '/sitemap', 'sitemap.xml');
     
 });
+
 $httpMethod = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = rtrim($uri, '/');
