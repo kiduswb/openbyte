@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- SEO Tags -->
+    <meta name="robots" content="index, follow">
     <title><?php echo $pageTitle; ?></title>
     
     <!-- Dependencies -->
