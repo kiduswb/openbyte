@@ -9,7 +9,6 @@
                     <span class="d-flex flex-column flex-md-row justify-content-center gap-3">
                         <a href="/terms" class="link text-columbia-blue">Terms of Service</a>
                         <a href="/privacy" class="link text-columbia-blue">Privacy Policy</a>
-                        <a href="https://github.com/kiduswb/openbyte" target="_blank" class="link text-columbia-blue"><i class="fab fa-github"></i> Contribute</a>
                         <a href="mailto:mail@openbytehosting.com" class="link text-columbia-blue"><i class="fas fa-envelope"></i> mail@openbytehosting.com</a>
                     </span>
                 </p>

@@ -14,9 +14,6 @@
                 <a class="nav-link <?php echo ($activePage === 'premium') ? 'active' : ''; ?>" href="/premium">
                     Get Premium
                 </a>
-                <a class="nav-link <?php echo ($activePage === 'donate') ? 'active' : ''; ?>" href="/donate">
-                    Contribute
-                </a>
                 <a class="nav-link" href="https://forum.openbytehosting.com" target="_blank">
                     Support Forum &nbsp;<i class="fas fa-arrow-up-right-from-square"></i>
                 </a>

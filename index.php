@@ -20,7 +20,6 @@ $dispatcher = simpleDispatcher(function(RouteCollector $r)
 
     $r->addRoute('GET', '[/]', '/main/home.php');
     $r->addRoute('GET', '/premium', '/main/premium.php');
-    $r->addRoute('GET', '/donate', '/main/donate.php');
     $r->addRoute('GET', '/terms', '/main/terms.php');
     $r->addRoute('GET', '/privacy', '/main/privacy.php');
 

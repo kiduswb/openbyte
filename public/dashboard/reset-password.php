@@ -82,9 +82,6 @@
                     <h4 class="card-title text-center">Reset Password</h4>
                     <form hx-post="/dashboard/reset-password/<?php echo $user->id; ?>" hx-target="#reset-err-msg" hx-swap="innerHTML">
                         <div class="mb-3">
-                            <p>Enter the email address you registered with and you'll receive an email with a code to reset your password.</p>
-                        </div>
-                        <div class="mb-3">
                             <div id="reset-err-msg"></div>
                         </div>
                         <div class="mb-3">
