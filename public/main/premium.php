@@ -37,7 +37,7 @@
                         7 Day Money-back Guarantee
                     </p>
                     <div class="text-center py-1">
-                        <a target="_blank" href="https://ifastnet.com/portal/aff.php?aff=29484" class="py-2 rounded-0 btn btn-light">
+                        <a target="_blank" rel=noreferrer href="https://ifastnet.com/portal/aff.php?aff=29484" class="py-2 rounded-0 btn btn-light">
                             Get Premium <i class="fas fa-arrow-up-right-from-square ms-2"></i>
                         </a>
                     </div>

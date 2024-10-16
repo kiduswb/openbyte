@@ -14,7 +14,7 @@
                 <a class="nav-link <?php echo ($activePage === 'premium') ? 'active' : ''; ?>" href="/premium">
                     Get Premium
                 </a>
-                <a class="nav-link" href="https://forum.openbytehosting.com" target="_blank">
+                <a class="nav-link" rel=noreferrer href="https://forum.openbytehosting.com" target="_blank">
                     Support Forum &nbsp;<i class="fas fa-arrow-up-right-from-square"></i>
                 </a>
                 <a class="btn btn-outline-columbia-blue rounded-0" href="/dashboard">

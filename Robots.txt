@@ -3,3 +3,4 @@ Disallow: /lib/
 Disallow: /templates/
 Disallow: /vendor/
 Disallow: /public/dashboard/
+Disallow: /assets/

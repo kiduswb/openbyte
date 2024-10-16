@@ -147,7 +147,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title">Overview</h5>
                                         <div class="card-text">
-                                            <p>Your website is currently active on <a class="link" href="http://<?php echo $site->subdomain; ?>" target="_blank"><?php echo $site->subdomain; ?></a>.</p>
+                                            <p>Your website is currently active on <a class="link" href="http://<?php echo $site->subdomain; ?>" rel=noreferrer target="_blank"><?php echo $site->subdomain; ?></a>.</p>
                                             <div class="border-dotted p-3 mb-3">
                                                 <p><b>cPanel Username</b> - <?php echo $site->cpanel_username; ?></p>
                                                 <p><b>cPanel Password</b> -
@@ -156,7 +156,7 @@
                                                     <button id="showPasswordBtn" class="btn btn-sm btn-outline-secondary rounded-0 ms-2" onclick="togglePassword()">Show Password</button>
                                                 </p>
                                             </div>
-                                            <a href="https://cpanel.obyte.site/" target="_blank" class="btn btn-outline-dark rounded-0">
+                                            <a href="https://cpanel.obyte.site/" rel=noreferrer target="_blank" class="btn btn-outline-dark rounded-0">
                                                 cPanel Login <i class="fa fa-arrow-up-right-from-square ms-2"></i>
                                             </a>
                                         </div>
