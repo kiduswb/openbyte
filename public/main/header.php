@@ -1,3 +1,7 @@
+<?php 
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+    $canonicalUrl = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +9,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- SEO Tags -->
+    <link rel="canonical" href="<?php echo htmlspecialchars($canonicalUrl, ENT_QUOTES, 'UTF-8'); ?>" />
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="openbyte, openbyte hosting, openbytehosting">
+    <meta name="description" content="OpenByte Hosting provides powerful and capable web hosting for free. Enjoy access to unlimited bandwidth and storage, 300+ apps and more!">
+    <meta property="og:title" content="<?php echo $pageTitle; ?>" />
+    <meta property="og:description" content="OpenByte Hosting provides powerful and capable web hosting for free. Enjoy access to unlimited bandwidth and storage, 300+ apps and more!" />
+    <meta property="og:url" content="<?php echo htmlspecialchars($canonicalUrl, ENT_QUOTES, 'UTF-8'); ?>" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="<?php echo $pageTitle; ?>" />
+    <meta name="twitter:description" content="OpenByte Hosting provides powerful and capable web hosting for free. Enjoy access to unlimited bandwidth and storage, 300+ apps and more!" />
+    <meta name="twitter:url" content="<?php echo htmlspecialchars($canonicalUrl, ENT_QUOTES, 'UTF-8'); ?>" />
     <title><?php echo $pageTitle; ?></title>
 
     <!-- Dependencies -->
