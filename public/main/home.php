@@ -55,7 +55,7 @@
                         <div class="card-body text-white text-center">        
                             <h3 class="card-title">Storage</h3>
                             <p class="card-text">
-                                Unlimited & safe NVMe SSD storage for your websites and applications.
+                                Unlimited & fast NVMe SSD storage for your websites and applications.
                             </p>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                         <div class="card-body text-white text-center">        
                             <h3 class="card-title">Security</h3>
                             <p class="card-text">
-                                Provision your certificates using Let's Encrypt. Enjoy access to Cloudflare's DDoS protection.
+                                Provision and manage your own SSL certificates, or use LetsEncrypt for easy SSL setup.
                             </p>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                         <div class="card-body text-white text-center">        
                             <h3 class="card-title">Domains</h3>
                             <p class="card-text">
-                                Easy domain and subdomain management via cPanel. Enjoy access to free subdomains.
+                                Easy domain and subdomain management via cPanel. Enjoy access to a free subdomain for your site.
                             </p>
                         </div>
                     </div>
@@ -169,7 +169,7 @@
                 <div class="col-lg-6 mb-5">
                     <h3>How many websites can I host?</h3>
                     <p class="lead">
-                        You can host up to 3 websites on the free plan. If you need more, check out the <a class="link text-dark" href="/premium">Premium</a> page.
+                        You can host up to 3 websites on the free plan. If you need more, upgrade to <a class="link text-dark" href="/premium">Premium</a> hosting.
                     </p> 
                 </div>
             </div>
